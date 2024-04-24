@@ -89,6 +89,7 @@ class VkApiClient:
         uploaded_files_info = []
 
         for key, value in self.dict_likes_photos().items():
+            print(key, value)
             if key is not None:             
                 headers = {
                     'Authorization': TOKEN_YD
@@ -99,17 +100,20 @@ class VkApiClient:
                 response = requests.get(UPLOAD_URL, 
                                         headers=headers, 
                                         params=params) 
-                if f"{value}.jpg" in file_in_folder:
+                if f"{value}.jpg" in file_in_folder:                                    
                     print(f"This file ({value}.jpg) has already been downloaded")
+
                 else:
                     try:
-                        url_for_upload = response.json()['href']
+                        url_for_upload = response.json()['href'] 
+                        photo_data = requests.get(key).content                        
+                        with open(f"{value}.jpg", 'wb') as f:
+                            f.write(photo_data)
                         file_size = os.path.getsize(f"{value}.jpg")
 
                         with open(f"{value}.jpg", 'rb') as f:
-                            requests.put(url_for_upload, files={'file': f})        
-
-                        print(f"Photo ({value}.jpg) is being uploaded using the link: {url_for_upload}")
+                            requests.put(url_for_upload, files={'file': f})   
+                        print(f"Photo ({value}.jpg) is being uploaded using the link: {url_for_upload}")                     
                         uploaded_files_info.append({"file_name": f"{value}.jpg", "size": file_size})
 
                     except KeyError:
