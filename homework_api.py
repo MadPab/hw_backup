@@ -165,8 +165,9 @@ if __name__ == '__main__':
 
     vk_client = VkApiClient(
         config["VK"]["access_token"], 
-        user_id=input("Enter your profile ID or Screen name: ")', 
-        cnt_dwnload_photo=int(input("Enter count photo for upload: ")  )
+        user_id=input("Enter your profile ID or Screen name: "), 
+        cnt_dwnload_photo=int(input("Enter count photo for upload: "))
+        )
 
     yd_client = YDApi(config["YD"]["token_yd"])
     yd_client.upload_images_YD(vk_client)
